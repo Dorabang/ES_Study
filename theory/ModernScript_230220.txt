@@ -1,0 +1,62 @@
+## ModernScript
+
+- ECMAScript(JavaScript Specification) : 자바스크립트의 표준 명세서
+    · ECMA International 국제 표준화 기구
+    · Modern JavaScript : 현시점에 사용하기 적합한 범위 내에서 최신 버전의 표준을 준수하는 자바스크립트
+        → 최신버전의 ES가 나와도 브라우저에 바로 적용될 수 없기 때문에
+        
+
+
+
+- Newly added primitive data type
+    · symbol : 기본형 데이터 타입(primitive data type) 중 하나, 코드 내에서 유일한 값을 가진 변수 이름을 만들 때 사용
+
+         const user = Symbol('this is a user');
+
+            user === 'this is user'; // false
+            user === 'user'; // false
+            user === 'Symbol'; // false
+            user === true; // false
+            user === false; // false
+            user === 123; // false
+            user === 0; // false
+            user === null; // false
+            user === undefined; // false
+
+
+        const symbolA = Symbol('this is Symbol');
+        const symbolB = Symbol('this is Symbol');
+
+        console.log(symbolA === symbolB); // false
+
+        → Symbol 값을 담게 된 user라는 이름의 변수는 다른 어떤 값과 비교해도 true가 될 수 없는 고유한 변수
+
+
+    · BigInt : 아주 큰 정수(Integer)를 표현하기 위해 등장한 기본형 데이터 타입
+        → 자바스크립트에서 안전한 최대 정수는 2**53 - 1, 안전한 최소 정수는 -(2**53 - 1)임, 2**53 - 1은 구체적으로 9007199254740991이라는 숫자로 약 9,000조 정도의 숫자
+
+        → BigInt 타입 사용 시, 일반 정수 마지막에 알파벳 n을 붙이거나 BigInt라는 함수를 사용
+
+            console.log(9007199254740993n); // 9007199254740993n
+            console.log(BigInt(9007199254740993)); // 9007199254740993
+
+        → 큰 정수를 표현하기 위한 데이터 타입이기 때문에 소수 표현에는 사용할 수가 없음, 소수 형태의 결과가 리턴되는 연산은 소수점 아랫부분은 버려지고 정수 형태로 리턴
+            3n * 2; // TypeError
+            3n * 2n; // 6n
+            Number(3n) * 2; // 6
+
+        → BigInt 타입끼리만 연산할 수 있고, 서로 다른 타입끼리의 연산은 명시적으로 타입 변환
+
+
+
+- ?? : null 병합 연산자
+    · null 혹은 undefined 값을 가려내는 연산자
+        const example1 = null ?? 'I';
+        const example2 = undefined ?? 'love';
+        const example3 = 'Codeit' ?? 'JavaScript';
+
+        console.log(example1, example2, example3); // I love Codeit
+
+    · OR 연산자와 동작하는 방식이 비슷함
+      null 병합 연산자는 왼편의 값이 null이나 undefined인지 확인  
+      OR 연산자는 왼편의 값이 falsy인지를 확인
