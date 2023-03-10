@@ -1,0 +1,132 @@
+## ModernScript
+
+    - Arrow Function : 기존의 함수 선언 방식을 보다 간결하게 만들어주는 문법
+        · 이름이 없는 익명 함수이기 때문에 이름을 가진 변수에 할당하거나 다른 함수의 argument로 함수를 선언할 때 활용
+        · Arrow Function 기본형
+
+            const getTwice = (number) => {
+            return number * 2;
+            };
+
+            console.log(getTwice(5)); // 10
+
+
+        · Arrow Function 간결하게 표현
+            
+            → 파라미터가 하나일 경우 소괄호를 생략할 수 있음 (소괄호 생략은 파라미터임을 직관적으로 알아보기 힘들 수 있음)
+
+                const getTwice = number => number * 2;
+
+                console.log(getTwice(6)); // 12
+
+                const myBtn = document.querySelector("#myBtn");
+
+                myBtn.addEventListener("click", () => {
+                console.log("button is clicked!");
+                });
+
+            → 함수 내부에서 조건문이나 반복문, 리턴문 사용 시에는 중괄호와 리턴 키워드는 생략할 수 없음
+
+                const sum = (a, b) => {
+                    const result = a + b;
+                    return result;
+                };
+                
+                console.log(sum(10, 5));
+
+            → 리턴값이 객체인 경우, 객체를 함수의 동작부분을 구분하는 중괄호로 인식하여 오류 발생, 때문에 소괄호로 동작부분임을 알려주어야 함
+                    
+                const getCodeit = () => ({ name: "Codeit" });
+
+                console.log(getCodeit());
+
+            → Arrow Function에는 arguments 객체가 없음, 만약 필요하다면 Arrow Function이 아닌 일반 Function을 사용해야 함
+
+                function normalFunc() {
+                    console.log(arguments);
+                }
+
+                const arrowFunc = () => {
+                    console.log(arguments);
+                };
+
+                normalFunc(1, 2, 3); // [1, 2, 3]
+                arrowFunc(1, 2, 3); // ReferenceError: arguments is not defined
+
+
+
+    - this
+        · 어떤 객체가 함수를 호출했는지에 따라 상대적으로 값이 변하게 됨
+
+            function getFullName() {
+                return `${this.firstName} ${this.lastName}`;
+            }
+
+            const user = {
+                firstName: "Tess",
+                lastName: "Jang",
+                getFullName: getFullName(),
+            };
+
+            const admin = {
+                firstName: "Alex",
+                lastName: "Kim",
+                getFullName: getFullName(),
+            };
+
+            console.log(user.getFullName()); // Tess Jang
+            console.log(admin.getFullName()); // Alex Kim
+
+        · 객체 선언없이 사용 시 기본값인 Window 값을 부르게 되어 있음
+
+            console.log(this);
+
+            function printThis() {
+                console.log(this);
+            }
+
+            printThis();
+
+        · 어떤 객체의 method로 호출되는 경우에는 함수를 호출한 this에 객체가 담겨, 같은 함수를 호출했지만 다른 객체가 출력됨
+
+            console.log(this);
+
+            function printThis() {
+                console.log(this);
+            }
+
+            const myObj = {
+                content: "myObj",
+                printThis: printThis,
+            };
+
+            const otherObj = {
+                content: "otherObj",
+                printThis: printThis,
+            };
+
+            myObj.printThis(); // {content: "myObj", ...}
+            otherObj.printThis(); // {content: "otherObj", ...}
+
+        · Arrow Function에서 this 호출 시, 일반 함수처럼 호출한 객체에 따라 상대적으로 변하는게 아니라
+        Arrow Function이 선언되기 직전에 유효한 this값과 똑같은 값을 동작하게 됨
+                    
+            console.log(this); // Arrow Function이 선언되기 직전 this는 window 객체이기 때문에 아래에서 부른 것도 window가 반환
+
+            const printThis = () => {
+            console.log(this);
+            };
+
+            const myObj = {
+            content: "myObj",
+            printThis: printThis,
+            };
+
+            const otherObj = {
+            content: "otherObj",
+            printThis: printThis,
+            };
+
+            myObj.printThis(); // Window{window: Window, ...}
+            otherObj.printThis(); // Window{window: Window, ...}
+
